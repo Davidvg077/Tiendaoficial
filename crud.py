@@ -102,3 +102,8 @@ async def obtener_productos():
             producto_dict['categoria'] = categoria_nombre
             result.append(producto_dict)
         return result    
+
+async def obtener_producto(id: int):
+    with Session(engine) as session:
+        producto = session.get(Producto, id)
+        return producto        
