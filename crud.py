@@ -107,3 +107,12 @@ async def obtener_producto(id: int):
     with Session(engine) as session:
         producto = session.get(Producto, id)
         return producto        
+
+async def eliminar_producto(id: int):
+    with Session(engine) as session:
+        producto = session.get(Producto, id)
+        if producto:
+            session.delete(producto)
+            session.commit()
+            return True
+        return False        
