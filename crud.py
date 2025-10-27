@@ -72,3 +72,13 @@ async def actualizar_categoria(id: int, categoria_update):
             session.refresh(categoria)
             return categoria
         return None
+    
+async def desactivar_categoria(id: int):
+    with Session(engine) as session:
+        categoria = session.get(Categoria, id)
+        if categoria:
+            categoria.activa = False
+            session.commit()
+            session.refresh(categoria)
+            return categoria
+        return None    
