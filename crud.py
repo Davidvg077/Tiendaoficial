@@ -85,9 +85,20 @@ async def desactivar_categoria(id: int):
 
 # Funciones CRUD para producto        
 
-async def crear_categoria(categoria: Categoria):
+async def crear_producto(producto: Producto):
     with Session(engine) as session:
-        session.add(categoria)
+        session.add(producto)
         session.commit()
-        session.refresh(categoria)
-        return categoria
+        session.refresh(producto)
+        return producto
+
+async def obtener_productos():
+    with Session(engine) as session:
+        productos = session.exec(select(Producto, Categoria.nombre.label("categoria_nombre")).join(Categoria)).all()
+        # Devolver productos con stock, precio, categoria
+        result = []
+        for producto, categoria_nombre in productos:
+            producto_dict = producto.dict()
+            producto_dict['categoria'] = categoria_nombre
+            result.append(producto_dict)
+        return result    
