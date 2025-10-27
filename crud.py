@@ -115,4 +115,13 @@ async def eliminar_producto(id: int):
             session.delete(producto)
             session.commit()
             return True
-        return False        
+        return False       
+
+async def obtener_producto_con_categoria(id: int):
+    with Session(engine) as session:
+        producto = session.exec(select(Producto).where(Producto.id == id)).first()
+        if producto:
+            # Cargar la categoría relacionada
+            session.refresh(producto, attribute_names=['categoria'])
+            return producto
+        return None     
