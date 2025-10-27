@@ -24,3 +24,18 @@ class CategoriaResponse(CategoriaBase):
 
     class Config:
         orm_mode = True    
+
+# Esquemas de producto
+
+class ProductoBase(BaseModel):
+    nombre: constr(min_length=1, max_length=100)
+    descripcion: Optional[str] = None
+    precio: float = Field(gt=0, description="El precio debe ser mayor que 0")
+    stock: conint(ge=0) = 0
+    activo: Optional[bool] = True
+    categoria_id: int
+
+
+class ProductoCreate(ProductoBase):
+    """Esquema para crear un producto"""
+    pass
