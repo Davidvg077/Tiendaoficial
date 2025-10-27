@@ -58,3 +58,32 @@ class ProductoResponse(ProductoBase):
 
     class Config:
         orm_mode = True
+
+
+# Relacion completa
+       
+class CategoriaConProductos(CategoriaResponse):
+    """Devuelve la categoría con todos sus productos"""
+    productos: List[ProductoResponse] = []
+
+    class Config:
+        orm_mode = True
+
+
+class ProductoListResponse(BaseModel):
+    id: int
+    nombre: str
+    descripcion: Optional[str] = None
+    precio: float
+    stock: int
+    activo: bool
+    categoria_id: int
+    categoria: str
+
+    class Config:
+        orm_mode = True
+
+
+class RestarStock(BaseModel):
+    cantidad: conint(gt=0)
+
