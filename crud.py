@@ -11,4 +11,7 @@ async def crear_categoria(categoria: Categoria):
         session.refresh(categoria)
         return categoria
     
-    
+async def obtener_categorias():
+    with Session(engine) as session:
+        categorias = session.exec(select(Categoria).where(Categoria.activa == True)).all()
+        return categorias    
