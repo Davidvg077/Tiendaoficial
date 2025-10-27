@@ -39,3 +39,22 @@ class ProductoBase(BaseModel):
 class ProductoCreate(ProductoBase):
     """Esquema para crear un producto"""
     pass
+
+
+class ProductoUpdate(BaseModel):
+    """Esquema para actualizar un producto"""
+    nombre: Optional[str] = None
+    descripcion: Optional[str] = None
+    precio: Optional[float] = Field(None, gt=0)
+    stock: Optional[int] = Field(None, ge=0)
+    activo: Optional[bool] = None
+    categoria_id: Optional[int] = None
+
+
+class ProductoResponse(ProductoBase):
+    """Esquema de respuesta de producto"""
+    id: int
+    categoria: Optional[CategoriaResponse] = None  # Para mostrar la categoría del producto
+
+    class Config:
+        orm_mode = True
