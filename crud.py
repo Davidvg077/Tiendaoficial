@@ -146,3 +146,13 @@ async def desactivar_producto(id: int):
             session.refresh(producto)
             return producto
         return None        
+
+async def restar_stock(id: int, cantidad: int):
+    with Session(engine) as session:
+        producto = session.get(Producto, id)
+        if producto and producto.stock >= cantidad:
+            producto.stock -= cantidad
+            session.commit()
+            session.refresh(producto)
+            return producto
+        return None        
