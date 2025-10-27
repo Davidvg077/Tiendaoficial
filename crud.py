@@ -15,3 +15,8 @@ async def obtener_categorias():
     with Session(engine) as session:
         categorias = session.exec(select(Categoria).where(Categoria.activa == True)).all()
         return categorias    
+    
+async def obtener_categoria(id: int):
+    with Session(engine) as session:
+        categoria = session.get(Categoria, id)
+        return categoria    
