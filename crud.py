@@ -82,3 +82,12 @@ async def desactivar_categoria(id: int):
             session.refresh(categoria)
             return categoria
         return None    
+
+# Funciones CRUD para producto        
+
+async def crear_categoria(categoria: Categoria):
+    with Session(engine) as session:
+        session.add(categoria)
+        session.commit()
+        session.refresh(categoria)
+        return categoria
