@@ -20,3 +20,12 @@ async def obtener_categoria(id: int):
     with Session(engine) as session:
         categoria = session.get(Categoria, id)
         return categoria    
+    
+async def eliminar_categoria(id: int):
+    with Session(engine) as session:
+        categoria = session.get(Categoria, id)
+        if categoria:
+            session.delete(categoria)
+            session.commit()
+            return True
+        return False    
