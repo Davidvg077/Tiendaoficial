@@ -136,3 +136,13 @@ async def actualizar_producto(id: int, producto_update):
             session.refresh(producto)
             return producto
         return None        
+
+async def desactivar_producto(id: int):
+    with Session(engine) as session:
+        producto = session.get(Producto, id)
+        if producto:
+            producto.activo = False
+            session.commit()
+            session.refresh(producto)
+            return producto
+        return None        
