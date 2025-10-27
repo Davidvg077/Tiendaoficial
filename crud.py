@@ -125,3 +125,14 @@ async def obtener_producto_con_categoria(id: int):
             session.refresh(producto, attribute_names=['categoria'])
             return producto
         return None     
+
+async def actualizar_producto(id: int, producto_update):
+    with Session(engine) as session:
+        producto = session.get(Producto, id)
+        if producto:
+            for key, value in producto_update.dict(exclude_unset=True).items():
+                setattr(producto, key, value)
+            session.commit()
+            session.refresh(producto)
+            return producto
+        return None        
