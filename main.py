@@ -17,3 +17,7 @@ def startup_event():
 @app.post("/categorias/", response_model=Categoria)
 async def crear_categoria(categoria: Categoria):
     return await crud.crear_categoria(categoria)
+
+@app.get("/categorias/", response_model=list[Categoria])
+async def obtener_categorias():
+    return await crud.obtener_categorias()    
