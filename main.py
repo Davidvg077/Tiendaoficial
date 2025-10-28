@@ -49,3 +49,10 @@ async def desactivar_categoria(id: int):
     if not categoria:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
     return categoria
+
+@app.delete("/categorias/{id}")
+async def eliminar_categoria(id: int):
+    eliminado = await crud.eliminar_categoria(id)
+    if not eliminado:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    return {"mensaje": "Categoría eliminada correctamente"} 
