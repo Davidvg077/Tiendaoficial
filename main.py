@@ -56,3 +56,9 @@ async def eliminar_categoria(id: int):
     if not eliminado:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
     return {"mensaje": "Categoría eliminada correctamente"} 
+
+# Endpoints de productos
+
+@app.post("/productos/", response_model=Producto)
+async def crear_producto(producto: Producto):
+    return await crud.crear_producto(producto)
