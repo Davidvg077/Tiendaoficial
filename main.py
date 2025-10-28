@@ -21,3 +21,10 @@ async def crear_categoria(categoria: Categoria):
 @app.get("/categorias/", response_model=list[Categoria])
 async def obtener_categorias():
     return await crud.obtener_categorias()    
+
+@app.get("/categorias/{id}", response_model=Categoria)
+async def obtener_categoria(id: int):
+    categoria = await crud.obtener_categoria(id)
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    return categoria
