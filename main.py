@@ -66,3 +66,11 @@ async def crear_producto(producto: Producto):
 @app.get("/productos/", response_model=list[ProductoListResponse])
 async def obtener_productos():
     return await crud.obtener_productos()
+
+
+@app.get("/productos/{id}", response_model=Producto)
+async def obtener_producto(id: int):
+    producto = await crud.obtener_producto(id)
+    if not producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return producto
