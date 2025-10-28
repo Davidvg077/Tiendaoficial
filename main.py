@@ -81,3 +81,10 @@ async def obtener_producto_con_categoria(id: int):
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return producto    
+
+@app.put("/productos/{id}", response_model=Producto)
+async def actualizar_producto(id: int, producto: ProductoUpdate):
+    producto_actualizado = await crud.actualizar_producto(id, producto)
+    if not producto_actualizado:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return producto_actualizado    
