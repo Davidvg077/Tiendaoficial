@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from models import Categoria, Producto
 from database import init_db
 import crud
-from Schemas import CategoriaUpdate, ProductoUpdate, CategoriaConProductos, ProductoResponse, ProductoListResponse, RestarStock
+from Schemas import CategoriaUpdate, ProductoUpdate, CategoriaConProductos, ProductoResponse, ProductoListResponse, RestarStock, CategoriaEliminada, ProductoEliminado
 
 app = FastAPI(title="API Tienda con SQLModel")
 
@@ -55,7 +55,11 @@ async def eliminar_categoria(id: int):
     eliminado = await crud.eliminar_categoria(id)
     if not eliminado:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
-    return {"mensaje": "Categoría eliminada correctamente"} 
+    return {"mensaje": "Categoría eliminada correctamente"}
+
+@app.get("/categorias/eliminadas", response_model=list[CategoriaEliminada])
+async def obtener_categorias_eliminadas():
+    return await crud.obtener_categorias_eliminadas()
 
 # Endpoints de productos
 
@@ -110,3 +114,7 @@ async def eliminar_producto(id: int):
     if not eliminado:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return {"mensaje": "Producto eliminado correctamente"}
+
+@app.get("/productos/eliminados", response_model=list[ProductoEliminado])
+async def obtener_productos_eliminados():
+    return await crud.obtener_productos_eliminados()

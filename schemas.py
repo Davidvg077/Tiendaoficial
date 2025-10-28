@@ -87,3 +87,9 @@ class ProductoListResponse(BaseModel):
 class RestarStock(BaseModel):
     cantidad: conint(gt=0)
 
+class CategoriaEliminada(CategoriaResponse):
+    deleted_at: Optional[str] = None
+
+class ProductoEliminado(ProductoResponse):
+    deleted_at: Optional[str] = None
+
