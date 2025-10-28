@@ -62,3 +62,7 @@ async def eliminar_categoria(id: int):
 @app.post("/productos/", response_model=Producto)
 async def crear_producto(producto: Producto):
     return await crud.crear_producto(producto)
+
+@app.get("/productos/", response_model=list[ProductoListResponse])
+async def obtener_productos():
+    return await crud.obtener_productos()
