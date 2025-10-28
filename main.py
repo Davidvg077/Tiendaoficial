@@ -102,3 +102,11 @@ async def restar_stock(id: int, restar: RestarStock):
     if not producto:
         raise HTTPException(status_code=400, detail="Producto no encontrado o stock insuficiente")
     return producto    
+
+
+@app.delete("/productos/{id}")
+async def eliminar_producto(id: int):
+    eliminado = await crud.eliminar_producto(id)
+    if not eliminado:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return {"mensaje": "Producto eliminado correctamente"}
