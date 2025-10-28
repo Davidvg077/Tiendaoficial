@@ -88,3 +88,10 @@ async def actualizar_producto(id: int, producto: ProductoUpdate):
     if not producto_actualizado:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return producto_actualizado    
+
+@app.patch("/productos/{id}/desactivar", response_model=Producto)
+async def desactivar_producto(id: int):
+    producto = await crud.desactivar_producto(id)
+    if not producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return producto    
