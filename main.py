@@ -35,3 +35,17 @@ async def obtener_categoria_con_productos(id: int):
     if not categoria:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
     return categoria
+
+@app.put("/categorias/{id}", response_model=Categoria)
+async def actualizar_categoria(id: int, categoria: CategoriaUpdate):
+    categoria_actualizada = await crud.actualizar_categoria(id, categoria)
+    if not categoria_actualizada:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    return categoria_actualizada
+
+@app.patch("/categorias/{id}/desactivar", response_model=Categoria)
+async def desactivar_categoria(id: int):
+    categoria = await crud.desactivar_categoria(id)
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    return categoria
