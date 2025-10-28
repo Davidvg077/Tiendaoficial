@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from models import Categoria, Producto
 from database import init_db
 import crud
-from Schemas import CategoriaUpdate, ProductoUpdate, CategoriaConProductos, ProductoResponse, ProductoListResponse, RestarStock, CategoriaEliminada, ProductoEliminado
+from schemas import CategoriaUpdate, ProductoUpdate, CategoriaConProductos, ProductoResponse, ProductoListResponse, RestarStock, CategoriaEliminada, ProductoEliminado
 
 app = FastAPI(title="API Tienda con SQLModel")
 
