@@ -28,3 +28,10 @@ async def obtener_categoria(id: int):
     if not categoria:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
     return categoria
+
+@app.get("/categorias/{id}/productos")
+async def obtener_categoria_con_productos(id: int):
+    categoria = await crud.obtener_categoria_con_productos(id)
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    return categoria
