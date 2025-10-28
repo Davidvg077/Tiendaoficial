@@ -95,3 +95,10 @@ async def desactivar_producto(id: int):
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return producto    
+
+@app.patch("/productos/{id}/restar-stock", response_model=Producto)
+async def restar_stock(id: int, restar: RestarStock):
+    producto = await crud.restar_stock(id, restar.cantidad)
+    if not producto:
+        raise HTTPException(status_code=400, detail="Producto no encontrado o stock insuficiente")
+    return producto    
