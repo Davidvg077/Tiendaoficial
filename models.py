@@ -18,7 +18,7 @@ class Producto(SQLModel, table=True):
     descripcion: Optional[str] = None
     precio: float
     stock: int
-    activo: bool = Field(default=True)
+    activo: bool = Field(default=True) 
     deleted_at: Optional[datetime] = None
 
     categoria_id: int = Field(foreign_key="categoria.id")
