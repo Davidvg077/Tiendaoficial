@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from models import Categoria, Producto
 from database import init_db
 import crud
-from schemas import CategoriaUpdate, ProductoUpdate, CategoriaConProductos, ProductoResponse, ProductoListResponse, RestarStock, CategoriaEliminada, ProductoEliminado, CategoriaCreate
+from schemas import CategoriaUpdate, ProductoUpdate, CategoriaConProductos, ProductoResponse, ProductoListResponse, RestarStock, CategoriaEliminada, ProductoEliminado, CategoriaCreate, ProductoCreate
 
 app = FastAPI(title="API Tienda con SQLModel")
 
@@ -67,8 +67,11 @@ async def obtener_categorias_eliminadas():
 # Endpoints de productos
 
 @app.post("/productos/", response_model=Producto)
-async def crear_producto(producto: Producto):
-    return await crud.crear_producto(producto)
+async def crear_producto(producto: ProductoCreate):
+    producto_creado = await crud.crear_producto(producto)
+    if not producto_creado:
+        raise HTTPException(status_code=400, detail="Producto no pudo ser creado")
+    return producto_creado
 
 @app.get("/productos/", response_model=list[ProductoListResponse])
 async def obtener_productos():
