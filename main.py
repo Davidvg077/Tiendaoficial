@@ -60,7 +60,7 @@ async def eliminar_categoria(id: int):
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
     return {"mensaje": "Categoría eliminada correctamente"}
 
-@app.get("/categorias/eliminadas", response_model=list[CategoriaEliminada])
+@app.get("/categorias/eliminadas")
 async def obtener_categorias_eliminadas():
     return await crud.obtener_categorias_eliminadas()
 
@@ -77,6 +77,10 @@ async def crear_producto(producto: ProductoCreate):
 async def obtener_productos():
     return await crud.obtener_productos()
 
+@app.get("/productos/eliminados", response_model=list[ProductoEliminado])
+async def obtener_productos_eliminados():
+    productos = await crud.obtener_productos_eliminados()
+    return productos
 
 @app.get("/productos/{id}", response_model=Producto)
 async def obtener_producto(id: int):
@@ -120,7 +124,3 @@ async def eliminar_producto(id: int):
     if not eliminado:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return {"mensaje": "Producto eliminado correctamente"}
-
-@app.get("/productos/eliminados", response_model=list[ProductoEliminado])
-async def obtener_productos_eliminados():
-    return await crud.obtener_productos_eliminados()

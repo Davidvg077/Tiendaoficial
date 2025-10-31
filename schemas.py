@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, conint, constr
 from typing import Optional, List
+from datetime import datetime
 
 # Esquemas de Categoria 
 
@@ -23,7 +24,7 @@ class CategoriaResponse(CategoriaBase):
     id: int
 
     class Config:
-        orm_mode = True    
+        from_attributes = True
 
 # Esquemas de producto
 
@@ -57,7 +58,7 @@ class ProductoResponse(ProductoBase):
     categoria: Optional[CategoriaResponse] = None  # Para mostrar la categoría del producto
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # Relacion completa
@@ -67,7 +68,7 @@ class CategoriaConProductos(CategoriaResponse):
     productos: List[ProductoResponse] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProductoListResponse(BaseModel):
@@ -81,15 +82,29 @@ class ProductoListResponse(BaseModel):
     categoria: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class RestarStock(BaseModel):
     cantidad: conint(gt=0)
 
 class CategoriaEliminada(CategoriaResponse):
-    deleted_at: Optional[str] = None
+    deleted_at: Optional[datetime] = None
 
-class ProductoEliminado(ProductoResponse):
-    deleted_at: Optional[str] = None
+    class Config:
+        from_attributes = True
+
+class ProductoEliminado(BaseModel):
+    id: int
+    nombre: str
+    descripcion: Optional[str] = None
+    precio: float
+    stock: int
+    activo: bool
+    categoria_id: int
+    categoria: Optional[CategoriaResponse] = None
+    deleted_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
 

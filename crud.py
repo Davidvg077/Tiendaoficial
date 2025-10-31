@@ -2,15 +2,20 @@ from sqlmodel import Session, select
 from models import Categoria, Producto
 from database import engine
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
 
 # Funciones CRUD para Categoria
 
-async def crear_categoria(categoria: Categoria):
-    with Session(engine) as session:
-        session.add(categoria)
-        session.commit()
-        session.refresh(categoria)
-        return categoria
+async def crear_categoria(categoria_data):
+    try:
+        categoria = Categoria(**categoria_data.dict())
+        with Session(engine) as session:
+            session.add(categoria)
+            session.commit()
+            session.refresh(categoria)
+            return categoria
+    except IntegrityError:
+        return None
     
 async def obtener_categorias():
     with Session(engine) as session:
@@ -87,12 +92,17 @@ async def desactivar_categoria(id: int):
 
 # Funciones CRUD para producto        
 
-async def crear_producto(producto: Producto):
-    with Session(engine) as session:
-        session.add(producto)
-        session.commit()
-        session.refresh(producto)
-        return producto
+async def crear_producto(producto_data):
+    try:
+        producto = Producto(**producto_data.dict())
+        with Session(engine) as session:
+            session.add(producto)
+            session.commit()
+            session.refresh(producto)
+            return producto
+    except Exception as e:
+        print(f"Error creando producto: {e}")
+        return None
 
 async def obtener_productos():
     with Session(engine) as session:
@@ -163,9 +173,31 @@ async def restar_stock(id: int, cantidad: int):
 async def obtener_categorias_eliminadas():
     with Session(engine) as session:
         categorias = session.exec(select(Categoria).where(Categoria.deleted_at != None)).all()
-        return categorias
+        result = []
+        for cat in categorias:
+            result.append({
+                "id": cat.id,
+                "nombre": cat.nombre,
+                "descripcion": cat.descripcion,
+                "activa": cat.activa,
+                "deleted_at": cat.deleted_at
+            })
+        return result
 
 async def obtener_productos_eliminados():
     with Session(engine) as session:
         productos = session.exec(select(Producto).where(Producto.deleted_at != None)).all()
-        return productos
+        result = []
+        for prod in productos:
+            result.append({
+                "id": prod.id,
+                "nombre": prod.nombre,
+                "descripcion": prod.descripcion,
+                "precio": prod.precio,
+                "stock": prod.stock,
+                "activo": prod.activo,
+                "categoria_id": prod.categoria_id,
+                "categoria": None,
+                "deleted_at": prod.deleted_at
+            })
+        return result
